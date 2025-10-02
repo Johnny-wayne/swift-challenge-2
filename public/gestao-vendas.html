@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Vendas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/gestao-vendas.css">
+</head>
+<body>
+    <div class="sidebar position-fixed top-0 start-0 h-100 p-3" style="width:250px;">
+        <div class="logo mb-4">Swift</div>
+        <div class="user-info mb-4">
+            <span>Claudio Vinícius</span><br>
+            <span>3ª Posição</span>
+        </div>
+        <ul>
+            <li>🏠 Início</li>
+            <li>🎯 Metas</li>
+            <li>🗒️ Missões</li>
+            <li>⚔️ Disputa</li>
+            <li class="section-title">Gerente</li>
+            <li>🛠️ Painel Gerente</li>
+            <li>📊 Ranking Regional</li>
+            <li>⚔️ Disputas</li>
+            <li>🗂️ Gestão de Missões</li>
+            <li>🛒 Gestão de Vendas</li>
+        </ul>
+        <div class="settings mt-auto">Configurações</div>
+    </div>
+    <div class="main-content">
+        <div class="header mb-4">
+            <h1>Gestão de Vendas</h1>
+            <p>Acompanhe vendas e performance da equipe</p>
+        </div>
+        <div class="row g-4 mb-4">
+            <div class="col-md-4">
+                <div class="card p-4">
+                    <div class="card-title">Vendas <span class="card-icon">🛒</span></div>
+                    <div class="card-text fs-3 fw-bold">R$ 12,36</div>
+                    <div class="card-subtitle">250 itens</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card p-4">
+                    <div class="card-title">Cross-sells <span class="card-icon">↗️</span></div>
+                    <div class="card-text fs-3 fw-bold">223 vendidos</div>
+                    <div class="card-subtitle">Meta: 250</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card p-4">
+                    <div class="card-title">Ticket Médio <span class="card-icon">📅</span></div>
+                    <div class="card-text fs-3 fw-bold">R$ 78,58</div>
+                    <div class="card-subtitle">210 vendas</div>
+                </div>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card p-4 mb-4">
+                    <div class="card-title mb-3">🛒 Últimas Vendas</div>
+                    <ul class="sales-list">
+                        <li><span><span class="sale-title">Açaí Frapp melgacuda 1kg</span><br><span class="sale-time">15 min atrás</span></span><span><span class="sale-price">R$ 25,00</span><span class="sale-status">✔ Pronto</span></span></li>
+                        <li><span><span class="sale-title">Açaí Frapp melgacuda 1kg</span><br><span class="sale-time">23 min atrás</span></span><span><span class="sale-price">R$ 25,00</span><span class="sale-status">✔ Pronto</span></span></li>
+                        <li><span><span class="sale-title">Açaí Frapp melgacuda 1kg</span><br><span class="sale-time">31 min atrás</span></span><span><span class="sale-price">R$ 25,00</span><span class="sale-status">✔ Pronto</span></span></li>
+                        <li><span><span class="sale-title">Açaí Frapp melgacuda 1kg</span><br><span class="sale-time">45 min atrás</span></span><span><span class="sale-price">R$ 25,00</span><span class="sale-status">✔ Pronto</span></span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card p-4 mb-4">
+                    <div class="card-title mb-3">⏰ Vendas por Categoria</div>
+                    <div class="donut-chart" id="donutChart"></div>
+                    <div class="donut-legend">
+                        <div><span class="acai"></span> Açaí &nbsp; 40%</div>
+                        <div><span class="lanches"></span> Lanches &nbsp; 25%</div>
+                        <div><span class="bebidas"></span> Bebidas &nbsp; 20%</div>
+                        <div><span class="sobremesas"></span> Sobremesas &nbsp; 10%</div>
+                        <div><span class="outros"></span> Outros &nbsp; 5%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Donut chart usando SVG
+        const data = [40, 25, 20, 10, 5];
+        const colors = ["#8e5cff", "#00bcd4", "#4caf50", "#ff9800", "#f44336"];
+        const donutChart = document.getElementById('donutChart');
+        const total = data.reduce((a,b) => a+b, 0);
+        let svg = `<svg viewBox='0 0 42 42' width='220' height='220'><circle r='15.915' cx='21' cy='21' fill='#f8f9fa'/>`;
+        let acc = 0;
+        data.forEach((val, i) => {
+            const pct = val / total * 100;
+            svg += `<circle r='15.915' cx='21' cy='21' fill='transparent' stroke='${colors[i]}' stroke-width='6' stroke-dasharray='${pct} ${100-pct}' stroke-dashoffset='${acc}'/>`;
+            acc -= pct;
+        });
+        svg += `</svg>`;
+        donutChart.innerHTML = svg;
+    </script>
+</body>
+</html>
