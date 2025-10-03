@@ -29,33 +29,29 @@ function createBarChart() {
   const xScale = width / chartData.length;
   const yScale = height / maxValue;
 
-  // Eixo Y e Linhas de Grade
   for (let i = 0; i <= maxValue; i += 7) {
-    if(i > maxValue || i > 35) continue; // Limita o eixo Y em 35
+    if(i > maxValue || i > 35) continue;
     const y = height - (i * yScale);
     
-    // Linha de grade
     const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
     line.setAttribute('x1', '0');
     line.setAttribute('y1', y);
     line.setAttribute('x2', width);
     line.setAttribute('y2', y);
-    line.setAttribute('stroke', '#e9ecef'); // Cor da linha para cinza claro
+    line.setAttribute('stroke', '#e9ecef');
     line.setAttribute('stroke-width', '1');
     g.appendChild(line);
 
-    // Texto do eixo Y
     const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
     text.setAttribute('x', '-8');
     text.setAttribute('y', y + 4);
     text.setAttribute('text-anchor', 'end');
     text.setAttribute('font-size', '12');
-    text.setAttribute('fill', '#aaa'); // Cor do texto para cinza
+    text.setAttribute('fill', '#aaa');
     text.textContent = i;
     g.appendChild(text);
   }
 
-  // Barras do Gráfico
   chartData.forEach((data, index) => {
     const barGroupX = (index * xScale) + (xScale * 0.15);
     const barWidth = xScale * 0.7;
@@ -66,7 +62,7 @@ function createBarChart() {
     completedBar.setAttribute('y', height - completedHeight);
     completedBar.setAttribute('width', barWidth);
     completedBar.setAttribute('height', completedHeight);
-    completedBar.setAttribute('fill', '#27ae60'); // Verde
+    completedBar.setAttribute('fill', '#27ae60');
     completedBar.setAttribute('rx', '4');
     completedBar.setAttribute('ry', '4');
     
@@ -75,13 +71,12 @@ function createBarChart() {
     completedBar.addEventListener('mousemove', (e) => moveTooltip(e));
     g.appendChild(completedBar);
 
-    // Texto do Eixo X (Meses)
     const xLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
     xLabel.setAttribute('x', barGroupX + barWidth / 2);
     xLabel.setAttribute('y', height + 20);
     xLabel.setAttribute('text-anchor', 'middle');
     xLabel.setAttribute('font-size', '12');
-    xLabel.setAttribute('fill', '#888'); // Cor do texto para cinza
+    xLabel.setAttribute('fill', '#888');
     xLabel.textContent = data.name;
     g.appendChild(xLabel);
   });
@@ -102,9 +97,8 @@ function hideTooltip() {
 function moveTooltip(event) {
   const tooltip = document.getElementById('tooltip');
   const svgRect = event.target.closest('svg').getBoundingClientRect();
-  // Posiciona o tooltip em relação ao SVG para evitar problemas de scroll
   tooltip.style.left = (event.clientX - svgRect.left) + 'px';
-  tooltip.style.top = (event.clientY - svgRect.top - 10) + 'px'; // 10px acima do cursor
+  tooltip.style.top = (event.clientY - svgRect.top - 10) + 'px';
 }
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -23,7 +23,7 @@ function loadMissionData() {
     mission.assignedTo === currentUser.name || currentUser.role === 'gerente'
   );
 
-  const missionsGrid = document.querySelector('.missions-grid');
+const missionsGrid = document.querySelector('.missions-list');
   if (!missionsGrid) return;
 
   // Limpa missões existentes (mantém apenas a estrutura)
