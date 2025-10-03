@@ -1,12 +1,89 @@
 document.addEventListener("DOMContentLoaded", function () {
+  // Verifica se o usuário está logado
+  if (!window.dataManager.getCurrentUser()) {
+    window.location.href = 'login.html';
+    return;
+  }
+
+  loadMissionData();
   animateProgressBars();
-
   setupNavigation();
-
   setupHeaderButtons();
-
   setupMissionCardHovers();
+  setupLogoutButton();
+  setupBreadcrumbs();
 });
+
+function loadMissionData() {
+  const currentUser = window.dataManager.getCurrentUser();
+  const missions = window.dataManager.getMissions();
+  
+  // Filtra missões do usuário atual
+  const userMissions = missions.filter(mission => 
+    mission.assignedTo === currentUser.name || currentUser.role === 'gerente'
+  );
+
+  const missionsGrid = document.querySelector('.missions-grid');
+  if (!missionsGrid) return;
+
+  // Limpa missões existentes (mantém apenas a estrutura)
+  const existingCards = missionsGrid.querySelectorAll('.mission-card');
+  existingCards.forEach(card => card.remove());
+
+  // Cria cards de missões dinamicamente
+  userMissions.forEach(mission => {
+    const missionCard = createMissionCard(mission);
+    missionsGrid.appendChild(missionCard);
+  });
+}
+
+function createMissionCard(mission) {
+  const card = document.createElement('div');
+  card.className = `mission-card ${mission.status === 'concluida' ? 'completed' : ''}`;
+  card.dataset.missionId = mission.id;
+
+  const statusIcon = mission.status === 'concluida' ? 'fa-check-circle' : 
+                    mission.title.includes('Limpar') ? 'fa-broom' :
+                    mission.title.includes('Freezers') ? 'fa-snowflake' :
+                    mission.title.includes('frangos') ? 'fa-drumstick-bite' :
+                    'fa-tasks';
+
+  const timeText = mission.status === 'concluida' ? 'Concluído' : 
+                   new Date(mission.dueDate).toLocaleDateString('pt-BR', {
+                     day: '2-digit',
+                     month: '2-digit',
+                     hour: '2-digit',
+                     minute: '2-digit'
+                   });
+
+  card.innerHTML = `
+    <div class="mission-header">
+      <div class="mission-icon">
+        <i class="fas ${statusIcon}"></i>
+      </div>
+      <div class="mission-title">${mission.title}</div>
+      <div class="mission-points">${mission.points} pts</div>
+    </div>
+    <div class="mission-description">
+      ${mission.description}
+    </div>
+    <div class="mission-progress">
+      <div class="progress-label">
+        <span>Progresso</span>
+        <span>${mission.progress.toFixed(1)}%</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill ${mission.status === 'concluida' ? 'completed' : ''}" style="width: ${mission.progress}%"></div>
+      </div>
+    </div>
+    <div class="mission-time ${mission.status === 'concluida' ? 'completed' : ''}">
+      <i class="fas ${mission.status === 'concluida' ? 'fa-check' : 'fa-clock'}"></i>
+      <span>${timeText}</span>
+    </div>
+  `;
+
+  return card;
+}
 
 function animateProgressBars() {
   const progressBars = document.querySelectorAll(".progress-fill");
@@ -84,13 +161,15 @@ function setupMissionCardHovers() {
     });
 
     card.addEventListener("click", function () {
+      const missionId = parseInt(this.dataset.missionId);
       const missionTitle = this.querySelector(".mission-title").textContent;
       const isCompleted = this.classList.contains("completed");
 
       if (isCompleted) {
         showNotification(`Missão "${missionTitle}" já foi concluída!`);
       } else {
-        showNotification(`Clicou na missão: "${missionTitle}"`);
+        // Permite atualizar progresso da missão
+        updateMissionProgress(missionId, missionTitle);
       }
     });
   });
@@ -154,24 +233,32 @@ function loadSavedTheme() {
     document.body.classList.add("light-theme");
   }
 }
-function updateMissionProgress(missionIndex, newProgress) {
-  const missionCards = document.querySelectorAll(".mission-card");
-  if (missionIndex < missionCards.length) {
-    const card = missionCards[missionIndex];
-    const progressFill = card.querySelector(".progress-fill");
-    const progressLabel = card.querySelector(".progress-label span:last-child");
-
-    progressFill.style.width = newProgress + "%";
-    progressLabel.textContent = newProgress + "%";
-
-    if (newProgress >= 100) {
-      card.classList.add("completed");
-      const timeElement = card.querySelector(".mission-time");
-      timeElement.innerHTML =
-        '<i class="fas fa-check"></i><span>Concluído</span>';
-      timeElement.classList.add("completed");
-
-      showNotification("Missão concluída! Parabéns!");
+function updateMissionProgress(missionId, missionTitle) {
+  const currentProgress = window.dataManager.getMissions().find(m => m.id === missionId)?.progress || 0;
+  const newProgress = Math.min(currentProgress + 25, 100); // Incrementa 25% por clique
+  
+  const success = window.dataManager.updateMissionProgress(missionId, newProgress);
+  
+  if (success) {
+    // Atualiza a interface
+    const card = document.querySelector(`[data-mission-id="${missionId}"]`);
+    if (card) {
+      const progressFill = card.querySelector(".progress-fill");
+      const progressLabel = card.querySelector(".progress-label span:last-child");
+      
+      progressFill.style.width = newProgress + "%";
+      progressLabel.textContent = newProgress.toFixed(1) + "%";
+      
+      if (newProgress >= 100) {
+        card.classList.add("completed");
+        const timeElement = card.querySelector(".mission-time");
+        timeElement.innerHTML = '<i class="fas fa-check"></i><span>Concluído</span>';
+        timeElement.classList.add("completed");
+        
+        showNotification("Missão concluída! Parabéns!");
+      } else {
+        showNotification(`Progresso atualizado: ${newProgress.toFixed(1)}%`);
+      }
     }
   }
 }
@@ -199,3 +286,30 @@ document.addEventListener("keydown", function (e) {
   }
 });
 loadSavedTheme();
+
+function setupLogoutButton() {
+  // Adiciona botão de logout na sidebar
+  const sidebarFooter = document.querySelector('.sidebar-footer');
+  if (sidebarFooter) {
+    const logoutButton = document.createElement('a');
+    logoutButton.href = '#';
+    logoutButton.className = 'settings-link';
+    logoutButton.innerHTML = '<i class="fas fa-sign-out-alt"></i><span>Sair</span>';
+    
+    logoutButton.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (confirm('Tem certeza que deseja sair?')) {
+        window.dataManager.logout();
+      }
+    });
+    
+    sidebarFooter.appendChild(logoutButton);
+  }
+}
+
+function setupBreadcrumbs() {
+  // Adiciona breadcrumbs se o sistema de navegação estiver disponível
+  if (window.navigationManager) {
+    window.navigationManager.addBreadcrumbsToPage();
+  }
+}

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Swift - Disputas</title>
+    <!-- Link para o seu arquivo CSS -->
+    <link rel="stylesheet" href="../src/css/disputa.css" />
+    <link rel="stylesheet" href="../src/css/navigation.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="app-container">
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="logo">
+            <div class="logo-icon">S</div>
+            <span class="logo-text">Swift</span>
+          </div>
+          <div class="user-info">
+            <div class="user-avatar">
+              <i class="fas fa-user"></i>
+            </div>
+            <div class="user-details">
+              <div class="user-name">Claudio Vinícius</div>
+              <div class="user-position">3ª Posição</div>
+            </div>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav">
+          <div class="nav-section">
+            <div class="nav-section-title">Vendedor</div>
+            <ul class="nav-list">
+              <li class="nav-item"><a href="#" class="nav-link"><i class="fas fa-home"></i><span>Início</span></a></li>
+              <li class="nav-item"><a href="#" class="nav-link"><i class="fas fa-bullseye"></i><span>Metas</span></a></li>
+              <li class="nav-item"><a href="#" class="nav-link"><i class="fas fa-tasks"></i><span>Missões</span></a></li>
+              <li class="nav-item active"><a href="#" class="nav-link"><i class="fas fa-trophy"></i><span>Disputa</span></a></li>
+            </ul>
+          </div>
+          <div class="nav-section">
+            <div class="nav-section-title">Gerente</div>
+            <ul class="nav-list">
+              <li class="nav-item"><a href="#" class="nav-link"><i class="fas fa-chart-pie"></i><span>Painel Gerente</span></a></li>
+              <li class="nav-item"><a href="#" class="nav-link"><i class="fas fa-chart-line"></i><span>Ranking Regional</span></a></li>
+              <li class="nav-item"><a href="#" class="nav-link"><i class="fas fa-code-compare"></i><span>Disputas</span></a></li>
+              <li class="nav-item"><a href="#" class="nav-link"><i class="fas fa-clipboard-list"></i><span>Gestão de Missões</span></a></li>
+              <li class="nav-item"><a href="#" class="nav-link"><i class="fas fa-store"></i><span>Gestão de Vendas</span></a></li>
+            </ul>
+          </div>
+        </nav>
+
+        <div class="sidebar-footer">
+          <a href="#" class="settings-link"><i class="fas fa-cog"></i><span>Configurações</span></a>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="dashboard-header">
+          <div class="header-text">
+            <h1>Disputas</h1>
+            <p>Compare seu desempenho com outras lojas</p>
+          </div>
+          <div class="region-filter">
+            <span>Região Sul</span>
+          </div>
+        </header>
+
+        <section class="dashboard-content">
+          <div class="disputes-grid">
+            <div class="card dispute-comparison-card">
+              <h3><i class="fas fa-chart-bar"></i> Comparação de Performance</h3>
+              <div class="comparison-container">
+                <div class="store-comparison">
+                  <div class="store-card my-store">
+                    <h4>Minha Loja</h4>
+                    <div class="performance-chart">
+                      <div class="chart-bars">
+                        <!-- CORREÇÃO: Usando a variável CSS '--final-height' em vez de 'height' -->
+                        <div class="bar" style="--final-height: 65%;" data-value="130"></div>
+                        <div class="bar" style="--final-height: 80%;" data-value="160"></div>
+                        <div class="bar" style="--final-height: 75%;" data-value="150"></div>
+                        <div class="bar" style="--final-height: 50%;" data-value="100"></div>
+                        <div class="bar" style="--final-height: 100%;" data-value="200"></div>
+                        <div class="bar" style="--final-height: 120%;" data-value="240"></div>
+                        <div class="bar" style="--final-height: 85%;" data-value="170"></div>
+                      </div>
+                      <div class="chart-labels">
+                        <span>05/06</span>
+                        <span>11/06</span>
+                        <span>17/06</span>
+                        <span>23/06</span>
+                        <span>29/06</span>
+                        <span>05/07</span>
+                        <span>11/07</span>
+                      </div>
+                    </div>
+                    <div class="store-stats">
+                      <div class="stat">
+                        <span class="label">Vendas</span>
+                        <span class="value">R$ 1.150.000</span>
+                      </div>
+                      <div class="stat">
+                        <span class="label">Crescimento</span>
+                        <span class="value positive">+23.3%</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="vs-divider">
+                    <span>VS</span>
+                  </div>
+                  
+                  <div class="store-card competitor-store">
+                    <h4>Loja Adversária</h4>
+                    <div class="performance-chart">
+                      <div class="chart-bars">
+                        <!-- CORREÇÃO: Usando a variável CSS '--final-height' em vez de 'height' -->
+                        <div class="bar" style="--final-height: 65%;" data-value="130"></div>
+                        <div class="bar" style="--final-height: 80%;" data-value="160"></div>
+                        <div class="bar" style="--final-height: 75%;" data-value="150"></div>
+                        <div class="bar" style="--final-height: 50%;" data-value="100"></div>
+                        <div class="bar" style="--final-height: 100%;" data-value="200"></div>
+                        <div class="bar" style="--final-height: 120%;" data-value="240"></div>
+                        <div class="bar" style="--final-height: 85%;" data-value="170"></div>
+                      </div>
+                      <div class="chart-labels">
+                        <span>05/06</span>
+                        <span>11/06</span>
+                        <span>17/06</span>
+                        <span>23/06</span>
+                        <span>29/06</span>
+                        <span>05/07</span>
+                        <span>11/07</span>
+                      </div>
+                    </div>
+                    <div class="store-stats">
+                      <div class="stat">
+                        <span class="label">Vendas</span>
+                        <span class="value">R$ 1.350.000</span>
+                      </div>
+                      <div class="stat">
+                        <span class="label">Crescimento</span>
+                        <span class="value positive">+67.7%</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card sales-breakdown-card">
+              <h3><i class="fas fa-chart-pie"></i> Vendas por Categoria</h3>
+              <div class="breakdown-content">
+                <div class="chart-container">
+                  <div class="pie-chart">
+                    <!-- O gráfico de pizza estava correto, nenhuma mudança necessária aqui -->
+                  </div>
+                </div>
+                <div class="legend">
+                  <div class="legend-item">
+                    <span class="legend-color" style="background-color: #e64c3c;"></span>
+                    <span class="legend-label">Frangos</span>
+                    <span class="legend-percentage">45%</span>
+                  </div>
+                  <div class="legend-item">
+                    <span class="legend-color" style="background-color: #E91E63;"></span>
+                    <span class="legend-label">Bovinos</span>
+                    <span class="legend-percentage">15%</span>
+                  </div>
+                  <div class="legend-item">
+                    <span class="legend-color" style="background-color: #27ae60;"></span>
+                    <span class="legend-label">Legumes</span>
+                    <span class="legend-percentage">30%</span>
+                  </div>
+                  <div class="legend-item">
+                    <span class="legend-color" style="background-color: #9b59b6;"></span>
+                    <span class="legend-label">Suínos</span>
+                    <span class="legend-percentage">5%</span>
+                  </div>
+                  <div class="legend-item">
+                    <span class="legend-color" style="background-color: #f39c12;"></span>
+                    <span class="legend-label">Tempero</span>
+                    <span class="legend-percentage">5%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <!-- Link para o seu arquivo JavaScript -->
+    <script src="../src/js/data-manager.js"></script>
+    <script src="../src/js/navigation.js"></script>
+    <script src="../src/js/components/disputa.js"></script>
+  </body>
+</html>
